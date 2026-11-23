@@ -1,3 +1,48 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Lowtide Run</title><style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#345c68;font-family:system-ui,sans-serif}canvas{display:block;width:100%;height:100%;touch-action:none}#touch{display:none;position:fixed;inset:auto 14px 22px;justify-content:space-between;align-items:end;pointer-events:none;user-select:none}.pad,.actions{display:grid;gap:7px;pointer-events:auto}.pad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px)}.actions{grid-template-columns:repeat(2,58px)}button{border:1px solid #ffffff55;border-radius:12px;background:#172023c9;color:#fff;font:700 17px system-ui;touch-action:none;min-width:48px;min-height:48px}.actions button{font-size:13px}@media(pointer:coarse),(max-width:700px){#touch{display:flex}}body.pause-open #touch{display:none}
-</style></head><body><canvas id="game" aria-label="Lowtide Run city driving game"></canvas><div id="touch" aria-label="Touch controls"><div class="pad"><span></span><button data-control="KeyW">&#9650;</button><span></span><button data-control="KeyA">&#9664;</button><button data-control="KeyS">&#9660;</button><button data-control="KeyD">&#9654;</button></div><div class="actions"><button data-control="KeyE">E<br>USE</button><button data-control="Space">BRAKE</button><button data-control="Tab">WEAPON</button><button data-control="KeyR">RELOAD</button><button data-control="KeyF">HIT</button><button data-control="KeyP">PAUSE</button><button data-control="ShiftLeft">RUN</button></div></div><script type="module" src="./src/main.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1e24" />
+    <title>Lowtide Run — Breakwater Bay</title>
+  </head>
+  <body>
+    <div id="game-root">
+      <canvas id="game" aria-label="Lowtide Run, a third-person coastal city exploration game"></canvas>
+      <header class="brand"><div class="brand-mark">L</div><div><strong>LOWTIDE RUN</strong><span>BREAKWATER BAY</span></div></header>
+      <div class="mission-status" id="mission-status" aria-live="polite"></div>
+      <section class="status-panel" aria-label="Player status">
+        <div class="status-heading"><span>CONDITION</span><b id="health-value">100</b></div>
+        <div class="health-track healthy" id="health-track"><div id="health-fill"></div></div>
+        <div class="money-line"><span>FUNDS</span><b id="money-value">$1,000</b></div>
+        <div class="wanted-line" aria-label="Police wanted level"><span>HEAT</span><div class="wanted-stars"><b class="wanted-star">★</b><b class="wanted-star">★</b><b class="wanted-star">★</b><b class="wanted-star">★</b><b class="wanted-star">★</b></div></div>
+        <div class="air-unit-alert" id="air-unit-alert" hidden>▲ POLICE AIR UNIT</div>
+        <div class="location-label"><span class="location-dot"></span><span id="location">South Quay</span></div>
+        <div class="vehicle-label" id="vehicle-status">ON FOOT</div>
+      </section>
+      <section class="weapon-hud" id="weapon-hud" aria-live="polite" hidden>
+        <span class="weapon-hud-icon" aria-hidden="true">⌁</span>
+        <div><strong id="weapon-name">Pistol</strong><span id="weapon-ammo">12 / 48</span><i id="weapon-reload" hidden></i></div>
+        <small>R RELOAD</small>
+      </section>
+      <div class="notification" id="notification" role="status" aria-live="polite"></div>
+      <section class="minimap-panel" id="minimap-panel" aria-label="City minimap">
+        <canvas id="minimap" aria-label="Rotating city minimap"></canvas>
+        <div class="minimap-footer"><span id="waypoint-label" hidden></span><span id="minimap-zoom">NORMAL</span><button id="map-open-button" type="button" aria-expanded="false">MAP <kbd>M</kbd></button></div>
+      </section>
+      <section class="map-overlay" id="map-overlay" hidden aria-label="Expanded city map">
+        <div class="map-window">
+          <header class="map-toolbar"><div><strong>BREAKWATER BAY</strong><span>CITY MAP · CLICK TO PLACE WAYPOINT</span></div><span class="map-legend"><i class="legend-player"></i>YOU <i class="legend-mission"></i>MISSION <i class="legend-police"></i>POLICE <i class="legend-car"></i>VEHICLE</span><button id="map-clear-button" type="button">CLEAR WAYPOINT</button><button id="map-close-button" type="button" aria-label="Close map">CLOSE <kbd>M / ESC</kbd></button></header>
+          <canvas id="expanded-map" tabindex="0" aria-label="Full city map. Click to place a waypoint."></canvas>
+          <footer>+ / − ZOOM <span> · </span> CLICK MAP TO SET WAYPOINT <span> · </span> M OR ESC TO RETURN TO GAME</footer>
+        </div>
+      </section>
+      <div class="death-overlay" id="death-overlay" hidden><strong>WASTED</strong><span>Recovering...</span></div>
+      <div class="interaction-hint" id="interaction">Explore the coast — buildings block your path</div>
+      <div class="controls-hint" id="controls-hint"><span><kbd>W A S D</kbd> MOVE</span><span><kbd>SHIFT</kbd> RUN</span><span><kbd>SPACE</kbd> JUMP</span><span><kbd>MOUSE</kbd> LOOK / ATTACK</span><span><kbd>WHEEL</kbd> SWITCH</span><span><kbd>R</kbd> RELOAD</span></div>
+      <div class="loading" id="loading"><div class="loading-brand">LOWTIDE RUN</div><div class="loading-bar"><i></i></div><span>BUILDING BREAKWATER BAY</span></div>
+      <div class="error-panel" id="error-panel" hidden></div>
+    </div>
+    <script type="module" src="./src/3d/main.js"></script>
+  </body>
+</html>
